@@ -1,5 +1,6 @@
 package app.sunshine.udacity.dgimenes.com.br.sunshine;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -27,6 +29,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -52,12 +55,30 @@ public class ForecastFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+        String[] fakeForecastData = {
+                "Today - Sunny - 22 / 16",
+                "Tomorrow - Sunny - 21 / 17",
+                "Saturday - Cloudy - 20 / 15",
+                "Sunday - Sunny - 25 / 19",
+                "Monday - Rainy - 20 / 12"
+        };
         List<String> weekForecast = new ArrayList<>();
+        weekForecast.addAll(Arrays.asList(fakeForecastData));
 
         forecastAdapter = new ArrayAdapter<>(getActivity(),
                 R.layout.list_item_forecast, R.id.list_view_forecast_textview, weekForecast);
         ListView forecastListView = (ListView) rootView.findViewById(R.id.listview_forecast);
         forecastListView.setAdapter(forecastAdapter);
+        forecastListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String forecastData = forecastAdapter.getItem(position);
+                Intent detailActivityIntent = new Intent(getActivity(), DetailActivity.class);
+                detailActivityIntent.putExtra(Intent.EXTRA_TEXT, forecastData);
+                startActivity(detailActivityIntent);
+            }
+        });
+
         return rootView;
     }
 
