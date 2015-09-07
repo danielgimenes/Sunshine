@@ -1,13 +1,18 @@
 package app.sunshine.udacity.dgimenes.com.br.sunshine;
 
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
+import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 
 public class MainActivity extends ActionBarActivity {
+
+    private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +39,22 @@ public class MainActivity extends ActionBarActivity {
         if (id == R.id.action_settings) {
             Intent settingsIntent = new Intent(this, SettingsActivity.class);
             startActivity(settingsIntent);
+            return true;
+        }
+
+        if (id == R.id.action_prefered_location) {
+            String preferredLocation = PreferenceManager.getDefaultSharedPreferences(this)
+                    .getString(getString(R.string.pref_location_key),
+                            getString(R.string.pref_location_default));
+            Uri locationUri = Uri.parse("geo:0,0").buildUpon()
+                    .appendQueryParameter("q", preferredLocation).build();
+            Intent preferredLocationIntent = new Intent(Intent.ACTION_VIEW);
+            preferredLocationIntent.setData(locationUri);
+            if (preferredLocationIntent.resolveActivity(getPackageManager()) != null) {
+                startActivity(preferredLocationIntent);
+            } else {
+                Log.e(LOG_TAG, "no map app to receive the intent");
+            }
             return true;
         }
 

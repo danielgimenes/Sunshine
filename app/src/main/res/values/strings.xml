@@ -7,4 +7,9 @@
     <string name="pref_location_default">Sao Paulo</string>
     <string name="pref_location_key">location</string>
     <string name="pref_location_label">Location</string>
+    <string name="pref_units_label">Units</string>
+    <string name="pref_units_metric">metric</string>
+    <string name="pref_units_imperial">imperial</string>
+    <string name="pref_units_key">units</string>
+    <string name="action_prefered_location">Prefered Location</string>
 </resources>
