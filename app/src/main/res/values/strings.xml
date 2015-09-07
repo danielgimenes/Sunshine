@@ -4,4 +4,7 @@
     <string name="action_settings">Settings</string>
     <string name="refresh_action" translatable="false">Refresh</string>
     <string name="title_activity_detail">DetailActivity</string>
+    <string name="pref_location_default">Sao Paulo</string>
+    <string name="pref_location_key">location</string>
+    <string name="pref_location_label">Location</string>
 </resources>
