@@ -19,9 +19,12 @@ package app.sunshine.udacity.dgimenes.com.br.sunshine;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.ShareActionProvider;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,12 +68,13 @@ public class DetailActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * A placeholder fragment containing a simple view.
-     */
     public static class PlaceholderFragment extends Fragment {
 
+        private final String SHARE_HASHTAG = "#SunshineApp";
+        private String shareMessage;
+
         public PlaceholderFragment() {
+            setHasOptionsMenu(true);
         }
 
         @Override
@@ -78,9 +82,21 @@ public class DetailActivity extends ActionBarActivity {
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
             String forecast = getActivity().getIntent().getStringExtra(Intent.EXTRA_TEXT);
+            shareMessage = forecast + " " + SHARE_HASHTAG;
             TextView forecastTextView = (TextView) rootView.findViewById(R.id.forecast_textview);
             forecastTextView.setText(forecast);
             return rootView;
+        }
+
+        @Override
+        public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+            inflater.inflate(R.menu.detailfragment, menu);
+            MenuItem item = menu.findItem(R.id.action_share);
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+            shareIntent.setType("text/plain");
+            shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
+            ((ShareActionProvider) MenuItemCompat.getActionProvider(item)).setShareIntent(shareIntent);
         }
     }
 }
