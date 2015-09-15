@@ -17,7 +17,38 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.v(LOG_TAG, "onCreate");
         setContentView(R.layout.activity_main);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.v(LOG_TAG, "onPause");
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.v(LOG_TAG, "onStart");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.v(LOG_TAG, "onStop");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.v(LOG_TAG, "onDestroy");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.v(LOG_TAG, "onResume");
     }
 
     @Override
