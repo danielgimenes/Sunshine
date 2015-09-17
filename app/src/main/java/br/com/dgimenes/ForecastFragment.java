@@ -1,4 +1,4 @@
-package app.sunshine.udacity.dgimenes.com.br.sunshine;
+package br.com.dgimenes;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -32,6 +32,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import app.sunshine.udacity.dgimenes.com.br.sunshine.R;
 
 
 /**

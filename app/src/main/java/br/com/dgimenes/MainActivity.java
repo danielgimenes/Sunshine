@@ -1,4 +1,4 @@
-package app.sunshine.udacity.dgimenes.com.br.sunshine;
+package br.com.dgimenes;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -8,6 +8,8 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import app.sunshine.udacity.dgimenes.com.br.sunshine.R;
 
 
 public class MainActivity extends ActionBarActivity {
