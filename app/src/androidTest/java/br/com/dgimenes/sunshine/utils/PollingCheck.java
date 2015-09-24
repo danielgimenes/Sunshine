@@ -15,7 +15,7 @@
  *
  * Note: This file copied from the Android CTS Tests
  */
-package br.com.dgimenes.utils;
+package br.com.dgimenes.sunshine.utils;
 
 import junit.framework.Assert;
 

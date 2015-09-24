@@ -1,4 +1,4 @@
-package br.com.dgimenes.data;
+package br.com.dgimenes.sunshine.data;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -13,7 +13,7 @@ import android.test.AndroidTestCase;
 import java.util.Map;
 import java.util.Set;
 
-import br.com.dgimenes.utils.PollingCheck;
+import br.com.dgimenes.sunshine.utils.PollingCheck;
 
 /*
     Students: These are functions and some test data to make it easier to test your database and

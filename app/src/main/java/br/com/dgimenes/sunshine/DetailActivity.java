@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package br.com.dgimenes;
+package br.com.dgimenes.sunshine;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -29,8 +29,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import app.sunshine.udacity.dgimenes.com.br.sunshine.R;
 
 
 public class DetailActivity extends ActionBarActivity {

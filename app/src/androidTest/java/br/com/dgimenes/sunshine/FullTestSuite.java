@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package br.com.dgimenes;
+package br.com.dgimenes.sunshine;
 
 import android.test.suitebuilder.TestSuiteBuilder;
 

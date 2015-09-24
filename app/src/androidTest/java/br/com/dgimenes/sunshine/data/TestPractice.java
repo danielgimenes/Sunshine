@@ -1,4 +1,4 @@
-package br.com.dgimenes.data;
+package br.com.dgimenes.sunshine.data;
 
 import android.test.AndroidTestCase;
 

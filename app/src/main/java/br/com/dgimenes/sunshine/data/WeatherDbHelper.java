@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package br.com.dgimenes.data;
+package br.com.dgimenes.sunshine.data;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
