@@ -155,8 +155,10 @@ public class WeatherProvider extends ContentProvider {
 
         switch (match) {
             // Student: Uncomment and fill out these two cases
-//            case WEATHER_WITH_LOCATION_AND_DATE:
-//            case WEATHER_WITH_LOCATION:
+            case WEATHER_WITH_LOCATION_AND_DATE:
+                return WeatherContract.WeatherEntry.CONTENT_ITEM_TYPE;
+            case WEATHER_WITH_LOCATION:
+                return WeatherContract.WeatherEntry.CONTENT_TYPE;
             case WEATHER:
                 return WeatherContract.WeatherEntry.CONTENT_TYPE;
             case LOCATION:
@@ -186,12 +188,12 @@ public class WeatherProvider extends ContentProvider {
             }
             // "weather"
             case WEATHER: {
-                retCursor = null;
+                retCursor = getWeather(uri, projection, sortOrder);
                 break;
             }
             // "location"
             case LOCATION: {
-                retCursor = null;
+                retCursor = getLocation(uri, projection, sortOrder);
                 break;
             }
 
@@ -200,6 +202,32 @@ public class WeatherProvider extends ContentProvider {
         }
         retCursor.setNotificationUri(getContext().getContentResolver(), uri);
         return retCursor;
+    }
+
+    private Cursor getWeather(Uri uri, String[] projection, String sortOrder) {
+        SQLiteQueryBuilder locationQueryBuilder = new SQLiteQueryBuilder();
+        locationQueryBuilder.setTables(WeatherContract.WeatherEntry.TABLE_NAME);
+        return locationQueryBuilder.query(mOpenHelper.getReadableDatabase(),
+                projection,
+                null,
+                null,
+                null,
+                null,
+                sortOrder,
+                null);
+    }
+
+    private Cursor getLocation(Uri uri, String[] projection, String sortOrder) {
+        SQLiteQueryBuilder weatherQueryBuilder = new SQLiteQueryBuilder();
+        weatherQueryBuilder.setTables(WeatherContract.LocationEntry.TABLE_NAME);
+        return weatherQueryBuilder.query(mOpenHelper.getReadableDatabase(),
+                projection,
+                null,
+                null,
+                null,
+                null,
+                sortOrder,
+                null);
     }
 
     /*
