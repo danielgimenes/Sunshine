@@ -314,6 +314,9 @@ public class WeatherProvider extends ContentProvider {
         SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         int match = sUriMatcher.match(uri);
 
+        if (selection == null) {
+            selection = "1";
+        }
         int affectedRows;
         switch (match) {
             case WEATHER:
