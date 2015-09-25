@@ -249,6 +249,15 @@ public class WeatherProvider extends ContentProvider {
                     throw new android.database.SQLException("Failed to insert row into " + uri);
                 break;
             }
+            case LOCATION: {
+                long id = db.insert(WeatherContract.LocationEntry.TABLE_NAME, null, values);
+                if (id > 0) {
+                    returnUri = WeatherContract.LocationEntry.buildLocationUri(id);
+                } else {
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                }
+                break;
+            }
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
