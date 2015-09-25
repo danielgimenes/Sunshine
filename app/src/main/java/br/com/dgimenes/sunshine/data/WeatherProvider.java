@@ -39,7 +39,7 @@ public class WeatherProvider extends ContentProvider {
 
     static{
         sWeatherByLocationSettingQueryBuilder = new SQLiteQueryBuilder();
-        
+
         //This is an inner join which looks like
         //weather INNER JOIN location ON weather.location_id = location._id
         sWeatherByLocationSettingQueryBuilder.setTables(
@@ -188,12 +188,28 @@ public class WeatherProvider extends ContentProvider {
             }
             // "weather"
             case WEATHER: {
-                retCursor = getWeather(uri, projection, sortOrder);
+                retCursor = mOpenHelper.getReadableDatabase().query(
+                        WeatherContract.WeatherEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
                 break;
             }
             // "location"
             case LOCATION: {
-                retCursor = getLocation(uri, projection, sortOrder);
+                retCursor = mOpenHelper.getReadableDatabase().query(
+                        WeatherContract.LocationEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
                 break;
             }
 
@@ -202,32 +218,6 @@ public class WeatherProvider extends ContentProvider {
         }
         retCursor.setNotificationUri(getContext().getContentResolver(), uri);
         return retCursor;
-    }
-
-    private Cursor getWeather(Uri uri, String[] projection, String sortOrder) {
-        SQLiteQueryBuilder locationQueryBuilder = new SQLiteQueryBuilder();
-        locationQueryBuilder.setTables(WeatherContract.WeatherEntry.TABLE_NAME);
-        return locationQueryBuilder.query(mOpenHelper.getReadableDatabase(),
-                projection,
-                null,
-                null,
-                null,
-                null,
-                sortOrder,
-                null);
-    }
-
-    private Cursor getLocation(Uri uri, String[] projection, String sortOrder) {
-        SQLiteQueryBuilder weatherQueryBuilder = new SQLiteQueryBuilder();
-        weatherQueryBuilder.setTables(WeatherContract.LocationEntry.TABLE_NAME);
-        return weatherQueryBuilder.query(mOpenHelper.getReadableDatabase(),
-                projection,
-                null,
-                null,
-                null,
-                null,
-                sortOrder,
-                null);
     }
 
     /*
