@@ -330,29 +330,42 @@ public class WeatherProvider extends ContentProvider {
 
     @Override
     public int bulkInsert(Uri uri, ContentValues[] values) {
-        final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
-        final int match = sUriMatcher.match(uri);
-        switch (match) {
-            case WEATHER:
-                db.beginTransaction();
-                int returnCount = 0;
-                try {
-                    for (ContentValues value : values) {
-                        normalizeDate(value);
-                        long _id = db.insert(WeatherContract.WeatherEntry.TABLE_NAME, null, value);
-                        if (_id != -1) {
-                            returnCount++;
+        SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+        int match = sUriMatcher.match(uri);
+        db.beginTransaction();
+        int inserted = 0;
+        try {
+            switch (match) {
+                case WEATHER:
+                    for (ContentValues contentValues : values) {
+                        normalizeDate(contentValues);
+                        long id = db.insert(WeatherContract.WeatherEntry.TABLE_NAME, null,
+                                contentValues);
+                        if (id != -1) {
+                            inserted++;
                         }
                     }
                     db.setTransactionSuccessful();
-                } finally {
-                    db.endTransaction();
-                }
-                getContext().getContentResolver().notifyChange(uri, null);
-                return returnCount;
-            default:
-                return super.bulkInsert(uri, values);
+                    break;
+                case LOCATION:
+                    for (ContentValues contentValues : values) {
+                        normalizeDate(contentValues);
+                        long id = db.insert(WeatherContract.LocationEntry.TABLE_NAME, null,
+                                contentValues);
+                        if (id != -1) {
+                            inserted++;
+                        }
+                    }
+                    db.setTransactionSuccessful();
+                    break;
+                default:
+                    throw new UnsupportedOperationException();
+            }
+        } finally {
+            db.endTransaction();
         }
+        getContext().getContentResolver().notifyChange(uri, null);
+        return inserted;
     }
 
     // You do not need to call this method. This is a method specifically to assist the testing
