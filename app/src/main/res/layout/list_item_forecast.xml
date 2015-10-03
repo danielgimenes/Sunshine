@@ -10,7 +10,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/list_item_icon"
-        android:src="@mipmap/ic_launcher"
         android:layout_margin="10dp"/>
 
 
@@ -23,14 +22,12 @@
         <TextView
             android:id="@+id/list_item_date_textview"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Tomorrow"/>
+            android:layout_height="wrap_content"/>
 
         <TextView
             android:id="@+id/list_view_forecast_textview"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Clear"/>
+            android:layout_height="wrap_content"/>
 
     </LinearLayout>
 
@@ -43,14 +40,12 @@
         <TextView
             android:id="@+id/list_item_high_textview"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="21"/>
+            android:layout_height="wrap_content"/>
 
         <TextView
             android:id="@+id/list_item_low_textview"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="8"/>
+            android:layout_height="wrap_content"/>
 
     </LinearLayout>
 
