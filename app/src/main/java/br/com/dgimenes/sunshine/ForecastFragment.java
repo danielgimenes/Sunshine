@@ -23,7 +23,7 @@ import br.com.dgimenes.sunshine.data.WeatherContract;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class ForecastFragment extends Fragment {
+public class ForecastFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int CURSOR_LOADER_ID = 12345656;
     private final String LOG_TAG = ForecastFragment.class.getSimpleName();
@@ -98,32 +98,15 @@ public class ForecastFragment extends Fragment {
         return rootView;
     }
 
+    public void onLocationChanged() {
+        updateWeather();
+        getLoaderManager().restartLoader(CURSOR_LOADER_ID, null, this);
+    }
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        getLoaderManager().initLoader(CURSOR_LOADER_ID, null, new LoaderManager.LoaderCallbacks<Cursor>() {
-            @Override
-            public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-                String locationSetting = Utility.getPreferredLocation(getActivity());
-                String sortOrder = WeatherContract.WeatherEntry.COLUMN_DATE + " ASC";
-                Uri weatherForLocationUri =
-                        WeatherContract.WeatherEntry.buildWeatherLocationWithStartDate(
-                        locationSetting, System.currentTimeMillis());
-                return new CursorLoader(getActivity(), weatherForLocationUri, FORECAST_COLUMNS,
-                        null, null, sortOrder);
-            }
-
-            @Override
-            public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-                forecastAdapter.swapCursor(data);
-            }
-
-            @Override
-            public void onLoaderReset(Loader<Cursor> loader) {
-                forecastAdapter.swapCursor(null);
-            }
-        });
+        getLoaderManager().initLoader(CURSOR_LOADER_ID, null, this);
     }
 
     @Override
@@ -143,14 +126,29 @@ public class ForecastFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onStart() {
-        updateWeather();
-        super.onStart();
-    }
-
     private void updateWeather() {
         String location = Utility.getPreferredLocation(getActivity());
         new FetchWeatherTask(getActivity()).execute(location);
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        String locationSetting = Utility.getPreferredLocation(getActivity());
+        String sortOrder = WeatherContract.WeatherEntry.COLUMN_DATE + " ASC";
+        Uri weatherForLocationUri =
+                WeatherContract.WeatherEntry.buildWeatherLocationWithStartDate(
+                        locationSetting, System.currentTimeMillis());
+        return new CursorLoader(getActivity(), weatherForLocationUri, FORECAST_COLUMNS,
+                null, null, sortOrder);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        forecastAdapter.swapCursor(data);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        forecastAdapter.swapCursor(null);
     }
 }
