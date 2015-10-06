@@ -33,6 +33,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import br.com.dgimenes.sunshine.data.WeatherContract;
@@ -110,7 +111,17 @@ public class DetailActivity extends ActionBarActivity {
         private final String SHARE_HASHTAG = "#SunshineApp";
         private Uri forecast;
         private ShareActionProvider shareActionProvider;
+
+        private TextView minTextView;
+        private TextView maxTextView;
         private TextView forecastTextView;
+        private TextView friendlyDateTextView;
+        private TextView dateTextView;
+        private TextView humidityTextView;
+        private TextView windTextView;
+        private TextView pressureTextView;
+        private ImageView forecastIconTextView;
+
 
         public PlaceholderFragment() {
             setHasOptionsMenu(true);
@@ -123,7 +134,16 @@ public class DetailActivity extends ActionBarActivity {
             Intent intent = getActivity().getIntent();
             if (intent != null) {
                 forecast = Uri.parse(intent.getDataString());
-                forecastTextView = (TextView) rootView.findViewById(R.id.forecast_textview);
+
+                minTextView = (TextView) rootView.findViewById(R.id.min_temp_view);
+                maxTextView = (TextView) rootView.findViewById(R.id.max_temp_view);
+                forecastTextView = (TextView) rootView.findViewById(R.id.forecast_view);
+                friendlyDateTextView = (TextView) rootView.findViewById(R.id.friendly_date_view);
+                dateTextView = (TextView) rootView.findViewById(R.id.date_view);
+                humidityTextView = (TextView) rootView.findViewById(R.id.humidity_view);
+                windTextView = (TextView) rootView.findViewById(R.id.wind_view);
+                pressureTextView = (TextView) rootView.findViewById(R.id.pressure_view);
+                forecastIconTextView = (ImageView) rootView.findViewById(R.id.forecast_icon);
 
                 getActivity().getLoaderManager().initLoader(DETAIL_LOADER_ID, null,
                         new LoaderManager.LoaderCallbacks<Cursor>() {
@@ -141,8 +161,19 @@ public class DetailActivity extends ActionBarActivity {
                                 if (!data.moveToFirst()) {
                                     return;
                                 }
-                                forecastTextView.setText(convertCursorRowToUXFormat(data)
-                                        + " " + SHARE_HASHTAG);
+                                friendlyDateTextView.setText("TODAY");
+                                dateTextView.setText("June, 25");
+
+                                minTextView.setText("9");
+                                maxTextView.setText("1");
+
+                                humidityTextView.setText("6");
+                                windTextView.setText("2");
+                                pressureTextView.setText("123");
+
+                                forecastIconTextView.setImageDrawable(getResources().getDrawable(
+                                        R.mipmap.ic_launcher));
+                                forecastTextView.setText("Clear");
                             }
 
                             @Override
