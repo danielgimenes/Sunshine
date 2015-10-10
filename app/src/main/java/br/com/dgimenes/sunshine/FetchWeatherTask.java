@@ -40,6 +40,8 @@ import br.com.dgimenes.sunshine.data.WeatherContract;
 
 public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
 
+    private final String APP_ID = "65085b3644174f7e46107a13ce48542f";
+
     private final String LOG_TAG = FetchWeatherTask.class.getSimpleName();
 
     private final Context mContext;
@@ -273,12 +275,14 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
             final String FORMAT_PARAM = "mode";
             final String UNITS_PARAM = "units";
             final String DAYS_PARAM = "cnt";
+            final String APIKEY_PARAM = "APPID";
 
             Uri builtUri = Uri.parse(FORECAST_BASE_URL).buildUpon()
                     .appendQueryParameter(QUERY_PARAM, params[0])
                     .appendQueryParameter(FORMAT_PARAM, format)
                     .appendQueryParameter(UNITS_PARAM, units)
                     .appendQueryParameter(DAYS_PARAM, Integer.toString(numDays))
+                    .appendQueryParameter(APIKEY_PARAM, APP_ID)
                     .build();
 
             URL url = new URL(builtUri.toString());
