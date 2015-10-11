@@ -21,35 +21,6 @@ public class ForecastAdapter extends CursorAdapter {
         super(context, c, flags);
     }
 
-
-    /**
-     * Prepare the weather high/lows for presentation.
-     */
-    private String formatHighLows(double high, double low) {
-        boolean isMetric = Utility.isMetric(mContext);
-        String highLowStr = Utility.formatTemperature(mContext, high, isMetric) + "/" +
-                Utility.formatTemperature(mContext, low, isMetric);
-        return highLowStr;
-    }
-
-    /*
-        This is ported from FetchWeatherTask --- but now we go straight from the cursor to the
-        string.
-     */
-    private String convertCursorRowToUXFormat(Cursor cursor) {
-        // get row indices for our cursor
-        double maxTemp = cursor.getDouble(ForecastFragment.COL_WEATHER_MAX_TEMP);
-        double minTemp = cursor.getDouble(ForecastFragment.COL_WEATHER_MIN_TEMP);
-        long date = cursor.getLong(ForecastFragment.COL_WEATHER_DATE);
-        String shortDesc = cursor.getString(ForecastFragment.COL_WEATHER_DESC);
-
-        String highAndLow = formatHighLows(maxTemp, minTemp);
-
-        return Utility.formatDate(date) +
-                " - " + shortDesc +
-                " - " + highAndLow;
-    }
-
     /*
         Remember that these views are reused as needed.
      */
@@ -91,11 +62,17 @@ public class ForecastAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         ViewHolder viewHolder = (ViewHolder) view.getTag();
+        int position = cursor.getPosition();
 
         // Read weather icon ID from cursor
-        int weatherId = cursor.getInt(ForecastFragment.COL_WEATHER_ID);
-        // Use placeholder image for now
-        viewHolder.iconView.setImageResource(R.mipmap.ic_launcher);
+        int weatherId = cursor.getInt(ForecastFragment.COL_WEATHER_CONDITION_ID);
+        if (getItemViewType(position) == VIEW_TYPE_TODAY) {
+            viewHolder.iconView.setImageResource(
+                    Utility.getArtResourceForWeatherCondition(weatherId));
+        } else {
+            viewHolder.iconView.setImageResource(
+                    Utility.getIconResourceForWeatherCondition(weatherId));
+        }
 
         String dayName = Utility.getFriendlyDayString(context,
                 cursor.getLong(ForecastFragment.COL_WEATHER_DATE));

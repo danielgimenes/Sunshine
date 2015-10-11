@@ -145,8 +145,10 @@ public class DetailFragment extends Fragment {
                             pressureTextView.setText(
                                     Double.valueOf(cursor.getDouble(COL_PRESSURE)).toString());
 
-                            forecastIconTextView.setImageDrawable(getResources().getDrawable(
-                                    R.mipmap.ic_launcher));
+
+                            forecastIconTextView.setImageResource(
+                                    Utility.getArtResourceForWeatherCondition(
+                                            cursor.getInt(COL_WEATHER_CONDITION_ID)));
                             forecastTextView.setText(cursor.getString(COL_WEATHER_DESC));
                         }
 
