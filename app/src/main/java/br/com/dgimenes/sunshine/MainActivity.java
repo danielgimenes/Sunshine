@@ -15,7 +15,9 @@ public class MainActivity extends ActionBarActivity {
 
     private String location;
 
-    private static final String FORECASTFRAGMENT_TAG = "FORECASTFRAGMENT_TAG";
+    private static final String DETAIL_FRAGMENT_TAG = "DETAIL_FRAGMENT_TAG";
+    private boolean twoPane;
+    private boolean detailFragmentAlreadyCreated;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,10 +25,18 @@ public class MainActivity extends ActionBarActivity {
         Log.v(LOG_TAG, "onCreate");
         setContentView(R.layout.activity_main);
         location = Utility.getPreferredLocation(this);
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new ForecastFragment(), FORECASTFRAGMENT_TAG)
-                    .commit();
+        if (findViewById(R.id.weather_detail_container) != null) {
+            twoPane = true;
+
+            if (!detailFragmentAlreadyCreated || savedInstanceState == null) {
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.weather_detail_container, new DetailFragment(),
+                                DETAIL_FRAGMENT_TAG)
+                        .commit();
+                detailFragmentAlreadyCreated = true;
+            }
+        } else {
+            twoPane = false;
         }
     }
 
@@ -61,7 +71,7 @@ public class MainActivity extends ActionBarActivity {
         String newLocation = Utility.getPreferredLocation(this);
         if (location != null && !newLocation.equals(location)) {
             ForecastFragment ff = (ForecastFragment) getSupportFragmentManager()
-                    .findFragmentByTag(FORECASTFRAGMENT_TAG);
+                    .findFragmentById(R.id.fragment_forecast);
             if (null != ff) {
                 ff.onLocationChanged();
             }

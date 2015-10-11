@@ -88,7 +88,7 @@ public class DetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
         Intent intent = getActivity().getIntent();
-        if (intent != null) {
+        if (intent != null && intent.getData() != null) {
             forecast = Uri.parse(intent.getDataString());
 
             minTextView = (TextView) rootView.findViewById(R.id.min_temp_view);
@@ -105,6 +105,10 @@ public class DetailFragment extends Fragment {
                     new LoaderManager.LoaderCallbacks<Cursor>() {
                         @Override
                         public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+                            Intent intent = getActivity().getIntent();
+                            if (intent == null || intent.getData() == null) {
+                                return null;
+                            }
                             return new CursorLoader(getActivity(), forecast,
                                     FORECAST_COLUMNS,
                                     null,
