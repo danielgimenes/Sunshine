@@ -25,7 +25,9 @@ import br.com.dgimenes.sunshine.data.WeatherContract;
 public class ForecastFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, AdapterView.OnItemClickListener {
 
     private static final int CURSOR_LOADER_ID = 12345656;
-    private final String LOG_TAG = ForecastFragment.class.getSimpleName();
+    private static final String LIST_POSITION_KEY = "LIST_POSITION";
+
+    private ListView forecastListView;
 
     private ForecastAdapter forecastAdapter;
 
@@ -58,6 +60,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     static final int COL_WEATHER_CONDITION_ID = 6;
     static final int COL_COORD_LAT = 7;
     static final int COL_COORD_LONG = 8;
+    private Integer lastListPosition;
 
     public ForecastFragment() {
     }
@@ -76,11 +79,23 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        ListView forecastListView = (ListView) rootView.findViewById(R.id.listview_forecast);
+        forecastListView = (ListView) rootView.findViewById(R.id.listview_forecast);
         forecastListView.setAdapter(forecastAdapter);
 
         forecastListView.setOnItemClickListener(this);
+
+        if (savedInstanceState != null && savedInstanceState.containsKey(LIST_POSITION_KEY)) {
+            lastListPosition = savedInstanceState.getInt(LIST_POSITION_KEY);
+        }
         return rootView;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        if (lastListPosition != ListView.INVALID_POSITION) {
+            outState.putInt(LIST_POSITION_KEY, lastListPosition);
+        }
+        super.onSaveInstanceState(outState);
     }
 
     public void onLocationChanged() {
@@ -130,6 +145,9 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         forecastAdapter.swapCursor(data);
+        if (lastListPosition != null && lastListPosition != ListView.INVALID_POSITION) {
+            forecastListView.smoothScrollToPosition(lastListPosition);
+        }
     }
 
     @Override
@@ -146,6 +164,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
                     .onItemSelected(WeatherContract.WeatherEntry.buildWeatherLocationWithDate(
                             locationSetting, cursor.getLong(COL_WEATHER_DATE)
                     ));
+            lastListPosition = position;
         }
     }
 
